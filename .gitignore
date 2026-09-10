@@ -1,0 +1,10 @@
+# Pastas do Python
+__pycache__/
+*.pyc
+
+# Ambientes Virtuais
+venv/
+env/
+
+# Banco de dados SQLite
+*.db
