@@ -5,7 +5,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "chave_secreta_para_flash_messages"
 
-# Configuração do banco de dados alterada para SQLite (utiliza o arquivo database.db na raiz)
+# Configuração do banco de dados SQLite (utiliza o arquivo database.db na raiz)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -69,6 +69,10 @@ class ItemManutencao(db.Model):
     quantidade_usada = db.Column(db.Integer, nullable=False)
     preco_unitario = db.Column(db.Float, nullable=False)
     peca = db.relationship('Peca')
+
+# Criação automática das tabelas assim que o app é carregado (essencial para o Render)
+with app.app_context():
+    db.create_all()
 
 # ==============================================================================
 # ROTAS DO SISTEMA
@@ -292,6 +296,4 @@ def relatorio_estoque_critico():
     return render_template('relatorios/estoque_critico.html', pecas=pecas_criticas, limite=limite_minimo)
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # Cria o banco database.db e as tabelas automaticamente
     app.run(debug=True)
