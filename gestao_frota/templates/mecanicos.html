@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Gestão de Mecânicos</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovoMecanico">Cadastrar Mecânico</button>
+</div>
+
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Especialidade</th>
+            <th>Turno</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mec in mecanicos %}
+        <tr>
+            <td>{{ mec.id }}</td>
+            <td><strong>{{ mec.nome }}</strong></td>
+            <td>{{ mec.especialidade or 'Geral' }}</td>
+            <td>{{ mec.turno or '-' }}</td>
+            <td>
+                <form action="/mecanicos/deletar/{{ mec.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Excluir este mecânico?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center">Nenhum mecânico cadastrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalNovoMecanico" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/mecanicos/criar" method="POST" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Mecânico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" name="nome" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Especialidade</label>
+                    <input type="text" name="especialidade" class="form-control" placeholder="Ex: Motor, Freios">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Turno</label>
+                    <select name="turno" class="form-select">
+                        <option value="Manhã">Manhã</option>
+                        <option value="Tarde">Tarde</option>
+                        <option value="Noite">Noite</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

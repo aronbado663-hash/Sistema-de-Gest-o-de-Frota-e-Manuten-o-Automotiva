@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold mb-1">Painel de Controle</h2>
+        <p class="text-muted">Visão geral e atalhos rápidos do sistema</p>
+    </div>
+</div>
+
+<!-- Cards de Atalhos -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <a href="{{ url_for('listar_veiculos') }}" class="text-decoration-none">
+            <div class="card card-hover p-3 h-100 border-0 shadow-sm">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3 fs-3">
+                        <i class="bi bi-car-front-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-0">Gestão de</h6>
+                        <h4 class="fw-bold mb-0 text-dark">Veículos</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{{ url_for('listar_manutencoes') }}" class="text-decoration-none">
+            <div class="card card-hover p-3 h-100 border-0 shadow-sm">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3 fs-3">
+                        <i class="bi bi-wrench-adjustable-circle-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-0">Ordens de</h6>
+                        <h4 class="fw-bold mb-0 text-dark">Manutenção</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{{ url_for('relatorio_estoque_critico') }}" class="text-decoration-none">
+            <div class="card card-hover p-3 h-100 border-0 shadow-sm">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-3 fs-3">
+                        <i class="bi bi-box-seam-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-0">Controle de</h6>
+                        <h4 class="fw-bold mb-0 text-dark">Estoque Crítico</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Banner de Boas-vindas -->
+<div class="card border-0 bg-primary text-white p-4 shadow-sm" style="background: linear-gradient(135deg, #2563eb, #1e40af);">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h3 class="fw-bold mb-2">Sistema Operacional do Pátio</h3>
+            <p class="mb-0 text-white-50">Cadastre peças, vincule motoristas aos veículos e monitore os custos operacionais da frota em tempo real.</p>
+        </div>
+        <div class="col-md-4 text-end d-none d-md-block">
+            <i class="bi bi-shield-check display-1 opacity-25"></i>
+        </div>
+    </div>
+</div>
+{% endblock %}

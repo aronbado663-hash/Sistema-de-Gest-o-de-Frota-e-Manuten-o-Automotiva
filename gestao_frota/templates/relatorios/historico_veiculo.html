@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Relatório: Histórico do Veículo</h2>
+
+<form method="POST" class="row g-3 my-3">
+    <div class="col-auto">
+        <input type="text" name="placa" class="form-control" placeholder="Digite a placa (ex: ABC-1234)" value="{{ placa_busca }}" required>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Buscar Histórico</button>
+    </div>
+</form>
+
+{% if veiculo %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-secondary text-white fw-bold">Dados do Veículo</div>
+        <div class="card-body">
+            <p class="mb-1"><strong>Modelo:</strong> {{ veiculo.modelo }} | <strong>Ano:</strong> {{ veiculo.ano }} | <strong>KM:</strong> {{ veiculo.quilometragem }} KM</p>
+            <p class="mb-0"><strong>Motorista Responsável:</strong> {{ veiculo.motorista.nome if veiculo.motorista else 'Nenhum' }}</p>
+        </div>
+    </div>
+
+    <h4>Histórico de Manutenções</h4>
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Mecânico</th>
+                <th>Descrição</th>
+                <th>Peças Utilizadas</th>
+                <th>Mão de Obra</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in manutencoes %}
+            <tr>
+                <td>{{ m.data_manutencao.strftime('%d/%m/%Y') }}</td>
+                <td><span class="badge {{ 'bg-warning text-dark' if m.tipo == 'Preventiva' else 'bg-danger' }}">{{ m.tipo }}</span></td>
+                <td>{{ m.mecanico.nome }}</td>
+                <td>{{ m.descricao }}</td>
+                <td>
+                    <ul class="mb-0 ps-3">
+                    {% for item in m.itens %}
+                        <li>{{ item.quantidade_usada }}x {{ item.peca.nome }} (R$ {{ "%.2f"|format(item.preco_unitario) }})</li>
+                    {% else %}
+                        <li><em>Sem peças registradas</em></li>
+                    {% endfor %}
+                    </ul>
+                </td>
+                <td>R$ {{ "%.2f"|format(m.valor_mao_de_obra) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-center">Nenhuma manutenção realizada para este veículo.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% elif placa_busca %}
+    <div class="alert alert-warning">Nenhum veículo encontrado com a placa digitada.</div>
+{% endif %}
+{% endblock %}

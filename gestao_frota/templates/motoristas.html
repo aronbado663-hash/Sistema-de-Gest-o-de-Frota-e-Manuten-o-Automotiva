@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Gestão de Motoristas</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovoMotorista">Cadastrar Motorista</button>
+</div>
+
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CNH</th>
+            <th>Categoria CNH</th>
+            <th>Telefone</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in motoristas %}
+        <tr>
+            <td>{{ m.id }}</td>
+            <td><strong>{{ m.nome }}</strong></td>
+            <td>{{ m.cnh }}</td>
+            <td>{{ m.categoria_cnh }}</td>
+            <td>{{ m.telefone or '-' }}</td>
+            <td>
+                <form action="/motoristas/deletar/{{ m.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Excluir este motorista?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center">Nenhum motorista cadastrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalNovoMotorista" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/motoristas/criar" method="POST" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Novo Motorista</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" name="nome" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">CNH</label>
+                    <input type="text" name="cnh" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Categoria CNH</label>
+                    <input type="text" name="categoria_cnh" class="form-control" placeholder="Ex: D" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Telefone</label>
+                    <input type="text" name="telefone" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

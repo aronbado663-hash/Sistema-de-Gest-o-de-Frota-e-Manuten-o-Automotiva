@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Estoque de Peças</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaPeca">Cadastrar Peça</button>
+</div>
+
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Fabricante</th>
+            <th>Valor Unitário</th>
+            <th>Estoque</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in pecas %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td><strong>{{ p.nome }}</strong></td>
+            <td>{{ p.fabricante }}</td>
+            <td>R$ {{ "%.2f"|format(p.valor_unitario) }}</td>
+            <td>
+                {% if p.qtd_estoque <= 5 %}
+                    <span class="badge bg-danger">{{ p.qtd_estoque }}</span>
+                {% else %}
+                    <span class="badge bg-success">{{ p.qtd_estoque }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <form action="/pecas/deletar/{{ p.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Excluir esta peça?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center">Nenhuma peça cadastrada.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalNovaPeca" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/pecas/criar" method="POST" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Peça</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nome da Peça</label>
+                    <input type="text" name="nome" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fabricante</label>
+                    <input type="text" name="fabricante" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Valor Unitário (R$)</label>
+                    <input type="number" step="0.01" name="valor_unitario" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Quantidade Inicial</label>
+                    <input type="number" name="qtd_estoque" class="form-control" value="0" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

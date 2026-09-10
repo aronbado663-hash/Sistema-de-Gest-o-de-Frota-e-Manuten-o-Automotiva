@@ -1,0 +1,10 @@
+# Ambiente Virtual
+venv/
+env/
+
+# Arquivos do Python
+__pycache__/
+*.pyc
+
+# Banco de dados local (opcional - evite enviar se tiver dados sensíveis)
+database.db

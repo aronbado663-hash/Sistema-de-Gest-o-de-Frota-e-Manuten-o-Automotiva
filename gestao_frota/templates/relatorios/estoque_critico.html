@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Relatório: Estoque Crítico</h2>
+    <form method="GET" class="d-flex gap-2">
+        <label class="align-self-center mb-0">Limite Mínimo:</label>
+        <input type="number" name="limite" class="form-control" value="{{ limite }}" style="width: 90px;">
+        <button type="submit" class="btn btn-sm btn-outline-secondary">Filtrar</button>
+    </form>
+</div>
+
+<div class="alert alert-info">Peças com saldo em estoque menor ou igual a <strong>{{ limite }}</strong> unidades.</div>
+
+<table class="table table-hover table-bordered align-middle">
+    <thead class="table-danger">
+        <tr>
+            <th>ID</th>
+            <th>Nome da Peça</th>
+            <th>Fabricante</th>
+            <th>Valor Unitário</th>
+            <th>Estoque Atual</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for peca in pecas %}
+        <tr>
+            <td>{{ peca.id }}</td>
+            <td><strong>{{ peca.nome }}</strong></td>
+            <td>{{ peca.fabricante }}</td>
+            <td>R$ {{ "%.2f"|format(peca.valor_unitario) }}</td>
+            <td class="text-danger fw-bold fs-5">{{ peca.qtd_estoque }}</td>
+            <td>
+                {% if peca.qtd_estoque == 0 %}
+                    <span class="badge bg-danger">Esgotado</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Estoque Crítico</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-success fw-bold">Todas as peças estão com estoque acima do limite seguro.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
